@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovment : MonoBehaviour
 {
     private Rigidbody2D _rigRigidbody2D;
+    public string nextLevel = "Dungeon Interior";
     private PlayerDialogue _playerDialogue;
     private float _xVelocity = 0f;
     private float _yVelocity = 0f;
@@ -15,7 +17,7 @@ public class PlayerMovment : MonoBehaviour
     void Start()
     {
         _rigRigidbody2D = GetComponent<Rigidbody2D>();
-        _playerDialogue = GetComponent<PlayerDialogue>();    
+        _playerDialogue = GetComponent<PlayerDialogue>();
     }
 
     // Update is called once per frame
@@ -32,7 +34,40 @@ public class PlayerMovment : MonoBehaviour
             _yVelocity = Input.GetAxis(Structs.Input.vertical);
         }
 
-        
-        _rigRigidbody2D.velocity = new Vector2(_xVelocity, _yVelocity) * speed; 
+
+        _rigRigidbody2D.velocity = new Vector2(_xVelocity, _yVelocity) * speed;
+
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        switch (collision.tag)
+        {
+            case "Death":
+                {
+                    string thisLevel = SceneManager.GetActiveScene().name;
+                    SceneManager.LoadScene(thisLevel);
+                    break;
+                }
+            case "Finish":
+                {
+                    SceneManager.LoadScene(nextLevel);
+                    break;
+                }
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
     }
 }
